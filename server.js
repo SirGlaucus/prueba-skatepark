@@ -1,9 +1,10 @@
 //Cargando librerias
 const { Pool } = require('pg')
 const express = require('express')
-const exphbs = require('express-handlebars')
-const app = express()
+const { engine } = require('express-handlebars')
 
+const path = require('path')
+const app = express()
 const port = 3000
 
 const pool = new Pool({
@@ -15,32 +16,71 @@ const pool = new Pool({
 })
 
 // Configuracion del handlebars 
-app.set('view engine', 'handlebars')
-app.engine('handlebars', exphbs.engine({ layoutsDir: __dirname + '/src/views' }))
+app.engine(
+    "handlebars",
+    engine({
+        layoutsDir: __dirname + "/views",
+        //partialsDir: __dirname + "/views/componentes/",
+    })
+)
 
+app.set("view engine", "handlebars")
 
-// Accecibilizando las librerias de Boostrap y jQuery
-app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
-app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/js'))
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'))
-app.use('/js', express.static(__dirname + '/assets/js'))
-// Consumir los códigos fuentes de Bootstrap y jQuery a través de rutas o middlewares creados en el servidor. Estas dependencias deben ser instaladas con NPM.
+// Para poder utilizar el body
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) 
 
-//  Definir la carpeta “assets” como carpeta pública del servidor
-app.use(express.static('assets/imgs'))
+// Accecibilizando la archivos de assets
+app.use('/css', express.static(__dirname + '/assets/css'))
+app.use('/js', express.static(__dirname + 'assets/js'))
+app.use('/img', express.static(__dirname + 'assets/img'))
 
 // Ruta de la pagina inicial
 app.get('/', async (req, res) => {
-    /*const result = await pool.query('SELECT * FROM frutas')
-    res.render('dashboard', {
-        layout: 'dashboard',
-        frutas: result.rows
-    })*/
-    res.send('Prueba')
+    //const result = await pool.query('SELECT * FROM frutas')
+    res.render('index', {
+        layout: 'index',
+        //frutas: result.rows
+    })
 })
-// Crear una ruta raíz que al ser consultada renderice una vista con un parcial
-// “Dashboard” enviándole en el render un arreglo con los nombres de los productos. Se
-// recomienda que estos coincidan con las imágenes de cada producto.
+
+app.get('/login', async (req, res) => {
+    //const result = await pool.query('SELECT * FROM frutas')
+    res.render('login', {
+        layout: 'login',
+        //frutas: result.rows
+    })
+})
+
+app.get('/registro', async (req, res) => {
+    const result = await pool.query('SELECT * FROM frutas')
+    res.render('registro', {
+        layout: 'registro',
+        //frutas: result.rows
+    })
+})
+
+app.post('/registro', async (req, res) => {
+    const course = req.body
+    console.log(course)
+    res.send(course)
+})
+
+app.get('/admin', async (req, res) => {
+    //const result = await pool.query('SELECT * FROM frutas')
+    res.render('admin', {
+        layout: 'admin',
+        //frutas: result.rows
+    })
+})
+
+app.get('/datos', async (req, res) => {
+    //const result = await pool.query('SELECT * FROM frutas')
+    res.render('datos', {
+        layout: 'datos',
+        //frutas: result.rows
+    })
+})
 
 // Iniciando el servidor
 app.listen(port, () => {
