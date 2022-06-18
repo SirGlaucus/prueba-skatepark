@@ -1,19 +1,12 @@
 //Cargando librerias
-const { Pool } = require('pg')
 const express = require('express')
 const { engine } = require('express-handlebars')
 
-const path = require('path')
+const { getSkaters } = require('./src/models/skaters')
+
+const path = require('path') // TODO: cambiar rutas por path.
 const app = express()
 const port = 3000
-
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    password: '1234',
-    port: 5432,
-    database: 'mercadoweb'
-})
 
 // Configuracion del handlebars 
 app.engine(
@@ -37,10 +30,11 @@ app.use('/img', express.static(__dirname + 'assets/img'))
 
 // Ruta de la pagina inicial
 app.get('/', async (req, res) => {
-    //const result = await pool.query('SELECT * FROM frutas')
+    const skaters = await getSkaters()
+    console.log(skaters)
     res.render('index', {
         layout: 'index',
-        //frutas: result.rows
+        skaters: skaters
     })
 })
 
