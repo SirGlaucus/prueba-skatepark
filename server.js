@@ -1,12 +1,15 @@
 //Cargando librerias
 const express = require('express')
 const { engine } = require('express-handlebars')
-
-const { getSkaters } = require('./src/models/skaters')
-
+const bodyparser = require('body-parser')
 const path = require('path') // TODO: cambiar rutas por path.
+
 const app = express()
 const port = 3000
+
+// Rutas
+const getSkatersRouter = require('./src/routes/indexRoutes')
+const registroRoutes = require('./src/routes/registroRoutes')
 
 // Configuracion del handlebars 
 app.engine(
@@ -16,12 +19,11 @@ app.engine(
         //partialsDir: __dirname + "/views/componentes/",
     })
 )
-
 app.set("view engine", "handlebars")
 
 // Para poder utilizar el body
-app.use(express.json())
-app.use(express.urlencoded({ extended: true })) 
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({ extended: false })) 
 
 // Accecibilizando la archivos de assets
 app.use('/css', express.static(__dirname + '/assets/css'))
@@ -29,14 +31,10 @@ app.use('/js', express.static(__dirname + 'assets/js'))
 app.use('/img', express.static(__dirname + 'assets/img'))
 
 // Ruta de la pagina inicial
-app.get('/', async (req, res) => {
-    const skaters = await getSkaters()
-    console.log(skaters)
-    res.render('index', {
-        layout: 'index',
-        skaters: skaters
-    })
-})
+app.use('/', getSkatersRouter)
+
+// Ruta para loggearse
+app.use('/registro', registroRoutes)
 
 app.get('/login', async (req, res) => {
     //const result = await pool.query('SELECT * FROM frutas')
@@ -46,19 +44,6 @@ app.get('/login', async (req, res) => {
     })
 })
 
-app.get('/registro', async (req, res) => {
-    const result = await pool.query('SELECT * FROM frutas')
-    res.render('registro', {
-        layout: 'registro',
-        //frutas: result.rows
-    })
-})
-
-app.post('/registro', async (req, res) => {
-    const course = req.body
-    console.log(course)
-    res.send(course)
-})
 
 app.get('/admin', async (req, res) => {
     //const result = await pool.query('SELECT * FROM frutas')

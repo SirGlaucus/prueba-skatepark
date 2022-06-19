@@ -10,7 +10,7 @@ const getSkaters = async () => {
     }
 }
 
-const createUser = async (datos) => {
+const createSkater = async (datos) => {
     try {
         const query = {
             text: 'INSERT INTO skaters (email, nombre, password, anos_experiencia, especialidad, foto, estado) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
@@ -24,11 +24,7 @@ const createUser = async (datos) => {
     }
 }
 
-//createUser()
-console.log('Creado')
-getSkaters()
-
-
 module.exports = {
-    getSkaters
+    getSkaters,
+    createSkater
 }
