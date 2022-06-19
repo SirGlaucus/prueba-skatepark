@@ -2,6 +2,7 @@
 const express = require('express')
 const { engine } = require('express-handlebars')
 const bodyparser = require('body-parser')
+const expressFileUpload = require('express-fileupload')
 const path = require('path') // TODO: cambiar rutas por path.
 
 const app = express()
@@ -10,6 +11,15 @@ const port = 3000
 // Rutas
 const getSkatersRouter = require('./src/routes/indexRoutes')
 const registroRoutes = require('./src/routes/registroRoutes')
+
+//Configuracion del FIleUpload
+app.use(
+    expressFileUpload({
+        limits: { fileSize: 5000000 },
+        abortOnLimit: true,
+        responseOnLimit: 'El peso del archivo que intentas subir supera el limite permitido',
+    })
+)
 
 // Configuracion del handlebars 
 app.engine(
@@ -23,7 +33,7 @@ app.set("view engine", "handlebars")
 
 // Para poder utilizar el body
 app.use(bodyparser.json())
-app.use(bodyparser.urlencoded({ extended: false })) 
+app.use(bodyparser.urlencoded({ extended: false }))
 
 // Accecibilizando la archivos de assets
 app.use('/css', express.static(__dirname + '/assets/css'))
