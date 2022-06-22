@@ -16,17 +16,20 @@ router.post('/', async (req, res) => {
         return
     }
     const { foto } = req.files
-    const email = req.body
-    console.log('FUNCIONA')
-    console.log(foto)
-    console.log(email)
-    const ruta = path.join(__dirname, 'assets', 'img', `imagen-prueba.jpg`) // Utiliza el path.join para facilitar las rutas
-    console.log(ruta)
-    foto.mv(ruta, (err) => {
-        res.render('registro', {
-            layout: 'registro'
+    const datos = req.body
+    if (datos.password === datos.passwordVerification) {
+        console.log('Cuenta creada con exito')
+        const ruta = path.join(__dirname, '..', '..', 'assets', 'img', foto.name)
+        const datosArray = [datos.email, datos.name, datos.password, datos.experienceYears, datos.specialization, `img/${foto.name}`, true]
+        await createSkater(datosArray)
+        foto.mv(ruta, (err) => {
+            res.render('registro', {
+                layout: 'registro'
+            })
         })
-    })
+    } else {
+        res.render('Por favor, verificar la contraseña')
+    }
 })
 
 module.exports = router

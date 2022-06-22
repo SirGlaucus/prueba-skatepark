@@ -36,9 +36,7 @@ app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: false }))
 
 // Accecibilizando la archivos de assets
-app.use('/css', express.static(__dirname + '/assets/css'))
-app.use('/js', express.static(__dirname + 'assets/js'))
-app.use('/img', express.static(__dirname + 'assets/img'))
+app.use(express.static('assets'))
 
 // Ruta de la pagina inicial
 app.use('/', getSkatersRouter)
