@@ -1,5 +1,5 @@
 const express = require('express')
-const { getSkaters } = require('../models/skatersSql')
+const { getSkaters } = require('../models/skatersQueries')
 const jwt = require('jsonwebtoken')
 const router = express.Router()
 
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
             exp: Math.floor(Date.now() / 1000) + 120,
             data: user,
         }, llaveSecret)
-        res.redirect('/datos')
+        res.redirect(`/datos?token=${token}`)
     } else {
         res.send("Usuario o contraseña incorrecta")
     }

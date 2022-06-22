@@ -1,5 +1,5 @@
 const express = require('express')
-const { getSkaters } = require('../models/skatersSql')
+const { getSkaters } = require('../models/skatersQueries')
 const router = express.Router()
 
 router.get('/', async (req, res) => {

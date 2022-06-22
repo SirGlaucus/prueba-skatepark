@@ -1,5 +1,5 @@
 const express = require('express')
-const { createSkater } = require('../models/skatersSql')
+const { createSkater } = require('../models/skatersQueries')
 const path = require('path')
 const router = express.Router()
 
@@ -17,7 +17,6 @@ router.post('/', async (req, res) => {
     const { foto } = req.files
     const datos = req.body
     if (datos.password === datos.passwordVerification) {
-        console.log('Cuenta creada con exito')
         const ruta = path.join(__dirname, '..', '..', 'assets', 'img', foto.name)
         const datosArray = [datos.email, datos.name, datos.password, datos.experienceYears, datos.specialization, `img/${foto.name}`, true]
         await createSkater(datosArray)
