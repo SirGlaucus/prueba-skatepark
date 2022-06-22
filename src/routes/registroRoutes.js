@@ -1,7 +1,6 @@
 const express = require('express')
 const { createSkater } = require('../models/skatersSql')
 const path = require('path')
-const app = express()
 const router = express.Router()
 
 router.get('/', async (req, res) => {

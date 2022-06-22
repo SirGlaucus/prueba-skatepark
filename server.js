@@ -11,6 +11,7 @@ const port = 3000
 // Rutas
 const getSkatersRouter = require('./src/routes/indexRoutes')
 const registroRoutes = require('./src/routes/registroRoutes')
+const loginRoutes = require('./src/routes/loginRoutes')
 
 //Configuracion del FIleUpload
 app.use(
@@ -41,16 +42,11 @@ app.use(express.static('assets'))
 // Ruta de la pagina inicial
 app.use('/', getSkatersRouter)
 
-// Ruta para loggearse
+// Ruta para registrarse
 app.use('/registro', registroRoutes)
 
-app.get('/login', async (req, res) => {
-    //const result = await pool.query('SELECT * FROM frutas')
-    res.render('login', {
-        layout: 'login',
-        //frutas: result.rows
-    })
-})
+// Ruta para loguearse
+app.use('/login', loginRoutes)
 
 
 app.get('/admin', async (req, res) => {
