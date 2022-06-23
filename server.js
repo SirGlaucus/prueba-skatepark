@@ -38,6 +38,8 @@ app.set("view engine", "handlebars")
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: false }))
 
+app.use(express.json());
+
 // Accecibilizando la archivos de assets
 app.use(express.static('assets'))
 

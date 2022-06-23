@@ -35,10 +35,15 @@ const editSkater = async (datos) => {
     }
 }
 
-const deleteSkater = async (datos) => {
-    console.log('Llego a la solicitud?')
+const deleteSkater = async (email) => {
+    console.log(email + '')
     try {
-        const result = await pool.query(`DELETE FROM skaters WHERE email = '${email}}'`)
+        const query = {
+            text: 'DELETE FROM skaters WHERE email = $1 RETURNING *',
+            values: [email]
+        }
+        const result = await pool.query(query)
+        console.log(result)
         return result.rowCount
     } catch (e) {
         // mostrarErrores(e)

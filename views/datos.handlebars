@@ -48,11 +48,16 @@
       <div class="mb-1">
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </div>
-      <div>
-        <button action="/datos" method="DELETE" type="submit" class="btn btn-danger">Eliminar cuenta</button>
-      </div>
     </form>
+    <div>
+      <button type="button" data-email="{{skater.email}}" id="boton-eliminar" class="btn btn-danger">Eliminar
+        cuenta</button>
+    </div>
   </div>
+  <script>
+    localStorage.setItem('token', '{{token}}')
+  </script>
+  <script src="/js/main.js"></script>
 </body>
 
 </html>
